@@ -1,43 +1,43 @@
 defmodule BeerSong do
-  @doc """
-  Get a single verse of the beer song
-  """
-
-  defp numero(number) when number == 0 do
+  defp numero(0) do
     "No more"
   end
 
   defp numero(number) do
-    to_string(rem(number + 100, 100))
+    rem(number + 100, 100)
   end
 
-  defp bottle_s(number) when number != 1 do
-    "bottles"
-  end
-
-  defp bottle_s(_) do
+  defp bottle_s(1) do
     "bottle"
   end
 
+  defp bottle_s(_) do
+    "bottles"
+  end
+
   defp bottle(number) do
-    numero(number) <> " " <> bottle_s(number)
+    "#{numero(number)} #{bottle_s(number)}"
   end
 
-  defp the_bottle(number) when number > 1 do
-    "one"
-  end
-
-  defp the_bottle(_) do
+  defp the_bottle(1) do
     "it"
   end
 
-  defp what_do_you_do(number) when number >= 1 do
+  defp the_bottle(_) do
+    "one"
+  end
+
+  defp what_do_you_do(0) do
+    "Go to the store and buy some more"
+  end
+
+  defp what_do_you_do(number) do
     "Take #{the_bottle(number)} down and pass it around"
   end
 
-  defp what_do_you_do(_) do
-    "Go to the store and buy some more"
-  end
+  @doc """
+  Get a single verse of the beer song
+  """
 
   @spec verse(integer) :: String.t()
   def verse(number) do
@@ -51,15 +51,10 @@ defmodule BeerSong do
   Get the entire beer song for a given range of numbers of bottles.
   """
   @spec lyrics(Range.t()) :: String.t()
-  def lyrics(range) do
+  def lyrics(range \\ 99..0) do
     range
-    |> Enum.map(fn x ->
+    |> Enum.map_join("\n",fn x ->
       verse(x)
     end)
-    |> Enum.join("\n")
-  end
-
-  def lyrics do
-    lyrics(99..0)
   end
 end

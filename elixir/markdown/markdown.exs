@@ -11,19 +11,27 @@ defmodule Markdown do
     "<h1>Header!</h1><ul><li><em>Bold Item</em></li><li><i>Italic Item</i></li></ul>"
   """
   @spec parse(String.t()) :: String.t()
-  def parse(m) do
-    patch(Enum.join(Enum.map(String.split(m, "\n"), fn t -> process(t) end)))
+  def parse(markdown_file) do
+    markdown_file
+    |> lines
+    |> Enum.map(&process(&1))
+    |> Enum.join()
+    |> patch
   end
 
-  defp process(t) do
-    if String.starts_with?(t, "#") || String.starts_with?(t, "*") do
-      if String.starts_with?(t, "#") do
-        enclose_with_header_tag(parse_header_md_level(t))
-      else
-        parse_list_md_level(t)
-      end
+  defp lines(raw_file) do
+    String.split(raw_file, "\n")
+  end
+
+  defp process(line) when String.starts_with?(line, "#") do
+    enclose_with_header_tag(parse_header_md_level(line))
+  end
+
+  defp process(line) do
+    if String.starts_with?(line, "*") do
+      parse_list_md_level(line)
     else
-      enclose_with_paragraph_tag(String.split(t))
+      enclose_with_paragraph_tag(String.split(line))
     end
   end
 

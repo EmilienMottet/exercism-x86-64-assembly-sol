@@ -9,7 +9,7 @@ yelling(S) ->
 
 question("") -> false;
 question(S) ->
-    string:right(S, 1) == "?".
+    lists:last(S) == $?.
 
 response(String) ->
     Trimed = string:trim(String),

@@ -14,72 +14,58 @@ defmodule Markdown do
   def parse(markdown_file) do
     markdown_file
     |> lines
-    |> Enum.map(&process(&1))
-    |> Enum.join()
-    |> patch
+    |> Enum.map_join(&process_line(&1))
+    |> parse_tags
+    |> wrap_ul
   end
 
   defp lines(raw_file) do
     String.split(raw_file, "\n")
   end
 
-  defp process(line) when String.starts_with?(line, "#") do
-    enclose_with_header_tag(parse_header_md_level(line))
+  defp count_header("#" <> line, acc) do
+    count_header(line, acc + 1)
   end
 
-  defp process(line) do
-    if String.starts_with?(line, "*") do
-      parse_list_md_level(line)
-    else
-      enclose_with_paragraph_tag(String.split(line))
-    end
+  defp count_header(_line, acc) do
+    acc
   end
 
-  defp parse_header_md_level(hwt) do
-    [h | t] = String.split(hwt)
-    {to_string(String.length(h)), Enum.join(t, " ")}
+  defp process_line("#" <> line) do
+    size = count_header(line, 1)
+    txt = String.slice(line, size..-1)
+    generate_header(size, txt)
   end
 
-  defp parse_list_md_level(l) do
-    t = String.split(String.trim_leading(l, "* "))
-    "<li>" <> join_words_with_tags(t) <> "</li>"
+  defp process_line("* " <> line) do
+    generate_li(line)
   end
 
-  defp enclose_with_header_tag({hl, htl}) do
-    "<h" <> hl <> ">" <> htl <> "</h" <> hl <> ">"
+  defp process_line(line) do
+    generate_p(line)
   end
 
-  defp enclose_with_paragraph_tag(t) do
-    "<p>#{join_words_with_tags(t)}</p>"
+  defp generate_header(size, text) do
+    "<h#{size}>#{text}</h#{size}>"
   end
 
-  defp join_words_with_tags(t) do
-    Enum.join(Enum.map(t, fn w -> replace_md_with_tag(w) end), " ")
+  defp generate_li(text) do
+    "<li>#{text}</li>"
   end
 
-  defp replace_md_with_tag(w) do
-    replace_suffix_md(replace_prefix_md(w))
+  defp generate_p(t) do
+    "<p>#{t}</p>"
   end
 
-  defp replace_prefix_md(w) do
-    cond do
-      w =~ ~r/^#{"__"}{1}/ -> String.replace(w, ~r/^#{"__"}{1}/, "<strong>", global: false)
-      w =~ ~r/^[#{"_"}{1}][^#{"_"}+]/ -> String.replace(w, ~r/_/, "<em>", global: false)
-      true -> w
-    end
+  defp parse_tags(txt) do
+    txt
+    |> String.replace(~r/__([^_]+)__/, "<strong>\\1</strong>")
+    |> String.replace(~r/_([^_]+)_/, "<em>\\1</em>")
   end
 
-  defp replace_suffix_md(w) do
-    cond do
-      w =~ ~r/#{"__"}{1}$/ -> String.replace(w, ~r/#{"__"}{1}$/, "</strong>")
-      w =~ ~r/[^#{"_"}{1}]/ -> String.replace(w, ~r/_/, "</em>")
-      true -> w
-    end
-  end
-
-  defp patch(l) do
+  defp wrap_ul(text) do
     String.replace_suffix(
-      String.replace(l, "<li>", "<ul>" <> "<li>", global: false),
+      String.replace(text, "<li>", "<ul>" <> "<li>", global: false),
       "</li>",
       "</li>" <> "</ul>"
     )

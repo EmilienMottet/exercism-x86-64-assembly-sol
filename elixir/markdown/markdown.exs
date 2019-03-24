@@ -14,7 +14,7 @@ defmodule Markdown do
   def parse(markdown_file) do
     markdown_file
     |> lines
-    |> Enum.map_join(&process_line(&1))
+    |> Enum.map_join(&process_line/1)
     |> parse_tags
     |> wrap_ul
   end
@@ -53,8 +53,8 @@ defmodule Markdown do
     "<li>#{text}</li>"
   end
 
-  defp generate_p(t) do
-    "<p>#{t}</p>"
+  defp generate_p(text) do
+    "<p>#{text}</p>"
   end
 
   defp parse_tags(txt) do

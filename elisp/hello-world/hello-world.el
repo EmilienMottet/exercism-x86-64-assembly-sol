@@ -4,8 +4,8 @@
 
 ;;; Code:
 
-(defun say-hello ()
-  "hello",
+(defun hello ()
+  "Hello, World!")
 
 
 (provide 'hello-world)

@@ -13,15 +13,13 @@ defmodule RobotSimulator do
     {:error, "invalid direction"}
   end
 
-  def create(_direction, position)
-      when not is_tuple(position) or tuple_size(position) != 2 or
-             not is_integer(elem(position, 0)) or
-             not is_integer(elem(position, 1)) do
-    {:error, "invalid position"}
+  def create(direction, {x, y} = position)
+      when is_tuple(position) and tuple_size(position) == 2 and is_integer(x) and is_integer(y) do
+    %{:position => position, :direction => direction}
   end
 
-  def create(direction, position) do
-    %{:position => position, :direction => direction}
+  def create(_direction, _position) do
+    {:error, "invalid position"}
   end
 
   @doc """
@@ -31,25 +29,25 @@ defmodule RobotSimulator do
   """
   @r_map %{:north => :east, :east => :south, :south => :west, :west => :north}
   @l_map %{:north => :west, :east => :north, :south => :east, :west => :south}
-  @a_map %{:north => {0,1}, :east => {1,0}, :south => {0,-1}, :west => {-1 , 0}}
+  @a_map %{:north => {0, 1}, :east => {1, 0}, :south => {0, -1}, :west => {-1, 0}}
   @spec simulate(robot :: any, instructions :: String.t()) :: any
   def simulate(robot, "R" <> instructions) do
     dir = robot[:direction]
 
-    simulate(Map.put(robot, :direction, @r_map[dir]), instructions)
+    simulate(%{robot | direction: @r_map[dir]}, instructions)
   end
 
   def simulate(robot, "L" <> instructions) do
     dir = robot[:direction]
 
-    simulate(Map.put(robot, :direction, @l_map[dir]), instructions)
+    simulate(%{robot | direction: @l_map[dir]}, instructions)
   end
 
   def simulate(robot, "A" <> instructions) do
     {x, y} = robot[:position]
     {a, b} = @a_map[robot[:direction]]
 
-    simulate(Map.put(robot, :position, {x + a, y + b}), instructions)
+    simulate(%{robot | position: {x + a, y + b}}, instructions)
   end
 
   def simulate(robot, "") do
@@ -66,15 +64,11 @@ defmodule RobotSimulator do
   Valid directions are: `:north`, `:east`, `:south`, `:west`
   """
   @spec direction(robot :: any) :: atom
-  def direction(robot) do
-    robot[:direction]
-  end
+  def direction(%{direction: direction}), do: direction
 
   @doc """
   Return the robot's position.
   """
   @spec position(robot :: any) :: {integer, integer}
-  def position(robot) do
-    robot[:position]
-  end
+  def position(%{position: position}), do: position
 end

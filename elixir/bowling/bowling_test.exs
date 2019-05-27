@@ -76,7 +76,7 @@ defmodule BowlingTest do
     assert Bowling.score(game) == 26
   end
 
-  # @tag :pending
+  @tag :pending
   test "consecutive strikes each get the two roll bonus" do
     game = Bowling.start()
     rolls = [10, 10, 10, 5, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -159,7 +159,7 @@ defmodule BowlingTest do
     assert Bowling.roll(game, 6) == {:error, "Pin count exceeds pins on the lane"}
   end
 
-  @tag :pending
+  # @tag :pending
   test "two bonus rolls after a strike in the last frame can score more than 10 points if one is a strike" do
     game = Bowling.start()
     rolls = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 10, 6]

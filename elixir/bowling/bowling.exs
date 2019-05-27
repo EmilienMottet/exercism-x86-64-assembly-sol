@@ -53,7 +53,8 @@ defmodule Bowling do
   @impl true
   def handle_call(:score, _from, [{kind, _, _}, {kind_previous, _, _} | _] = results)
       when kind != :done and not (kind == :strike_pending and length(results) == 12) and
-      not (kind_previous == :spare and kind == :strike_pending) and not (kind_previous == :strike and kind == :spare ) do
+             not (kind_previous == :spare and kind == :strike_pending) and
+             not (kind_previous == :strike and kind == :spare) do
     {:reply, {:error, "Score cannot be taken until the end of the game"}, nil}
   end
 
@@ -85,7 +86,7 @@ defmodule Bowling do
     end
   end
 
-  def bowling_calculator(roll, [{:done, _, _} | _] = results) when length(results) >= 10 do
+  def bowling_calculator(_, [{:done, _, _} | _] = results) when length(results) >= 10 do
     {:error, "Cannot roll after game is over"}
   end
 
@@ -163,7 +164,7 @@ defmodule Bowling do
     ]
   end
 
-  def update_frame_calculator({_, rolls, _} = last_update, [
+  def update_frame_calculator({_, rolls, _}, [
         {:spare, spare_rolls, score_frame} | results
       ]) do
     [

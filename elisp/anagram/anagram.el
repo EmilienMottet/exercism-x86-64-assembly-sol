@@ -4,13 +4,14 @@
 
 ;;; Code:
 
-(require 'cl)
+(require 'cl-lib)
 
-(defun anagram? (a b)
-  (and (not (equal (downcase a) (downcase b)) ) (equal (cl-sort (downcase a ) #'<) (cl-sort (downcase b ) #'<))))
+(defun anagramp (word_a word_b)
+  (and (not (string= (downcase word_a) (downcase word_b)))
+       (string= (cl-sort (downcase word_a ) #'<) (cl-sort (downcase word_b ) #'<))))
 
-(defun anagrams-for (a b)
-  (cl-remove-if-not (apply-partially #'anagram? a) b))
+(defun anagrams-for (word word_list)
+  (cl-remove-if-not (apply-partially #'anagramp word) word_list))
 
 
 

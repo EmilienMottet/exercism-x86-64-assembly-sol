@@ -18,9 +18,31 @@ defmodule Bowling do
     case it returns a helpful message.
   """
 
+  @min_score_roll 0
+  @max_score_roll 10
+  @max_score_frame 30
+  @ten_frame 10
+  @ultime_frame 12
+
+  defguard is_too_high(value) when value > @max_score_roll
+
+  defguard less_than_ten_frame(results) when length(results) < @ten_frame
+
+  defguard is_last_frame(results) when length(results) == @ultime_frame
+
+  defguard is_done(kind) when kind == :done
+
+  defguard is_strike(kind) when kind == :strike
+
+  defguard is_strike_pending(kind) when kind == :strike_pending
+
+  defguard is_pending(kind) when kind == :pending
+
+  defguard is_spare(kind) when kind == :spare
+
   @spec roll(any, integer) :: any | String.t()
-  def roll(_, roll) when roll < 0, do: {:error, "Negative roll is invalid"}
-  def roll(_, roll) when roll > 10, do: {:error, "Pin count exceeds pins on the lane"}
+  def roll(_, roll) when roll < @min_score_roll, do: {:error, "Negative roll is invalid"}
+  def roll(_, roll) when is_too_high(roll), do: {:error, "Pin count exceeds pins on the lane"}
 
   def roll(game, roll) do
     case GenServer.call(game, {:roll, roll}) do
@@ -46,15 +68,15 @@ defmodule Bowling do
   end
 
   @impl true
-  def handle_call(:score, _from, results) when length(results) < 10 do
+  def handle_call(:score, _from, results) when less_than_ten_frame(results) do
     {:reply, {:error, "Score cannot be taken until the end of the game"}, nil}
   end
 
   @impl true
   def handle_call(:score, _from, [{kind, _, _}, {kind_previous, _, _} | _] = results)
-      when kind != :done and not (kind == :strike_pending and length(results) == 12) and
-             not (kind_previous == :spare and kind == :strike_pending) and
-             not (kind_previous == :strike and kind == :spare) do
+      when not is_done(kind) and not (is_strike_pending(kind) and is_last_frame(results)) and
+             not (is_spare(kind_previous) and is_strike_pending(kind)) and
+             not (is_strike(kind_previous) and is_spare(kind)) do
     {:reply, {:error, "Score cannot be taken until the end of the game"}, nil}
   end
 
@@ -67,7 +89,7 @@ defmodule Bowling do
         {:pending, _, _} -> true
         _ -> false
       end)
-      |> Enum.take(10)
+      |> Enum.take(@ten_frame)
       |> Enum.map(fn {_, _, score_frame} -> score_frame end)
       |> Enum.sum()
 
@@ -86,22 +108,24 @@ defmodule Bowling do
     end
   end
 
-  def bowling_calculator(_, [{:done, _, _} | _] = results) when length(results) >= 10 do
+  def bowling_calculator(_, [{:done, _, _} | _] = results)
+      when not less_than_ten_frame(results) do
     {:error, "Cannot roll after game is over"}
   end
 
-  def bowling_calculator(_, [{:pending, _, _}, {kind, _, _} | _] = res)
-      when kind != :strike and kind != :strike_pending and length(res) > 10 do
+  def bowling_calculator(_, [{:pending, _, _}, {kind, _, _} | _] = results)
+      when kind != :strike and kind != :strike_pending and length(results) > @ten_frame do
     {:error, "Pin count exceeds pins on the lane"}
   end
 
-  def bowling_calculator(roll, [{:pending, [last_roll], _} | _]) when roll + last_roll > 10 do
+  def bowling_calculator(roll, [{:pending, [last_roll], _} | _])
+      when is_too_high(roll + last_roll) do
     {:error, "Pin count exceeds pins on the lane"}
   end
 
   # strike on first roll
-  def bowling_calculator(10, []) do
-    {10, {:strike, [10], 10}}
+  def bowling_calculator(@max_score_roll, []) do
+    {@max_score_roll, {:strike, [@max_score_roll], @max_score_roll}}
   end
 
   # first roll
@@ -111,18 +135,18 @@ defmodule Bowling do
   end
 
   # strike in bonus
-  def bowling_calculator(10, res) when length(res) >= 10 do
-    {10, {:strike_pending, [10], 10}}
+  def bowling_calculator(@max_score_roll, res) when length(res) >= @ten_frame do
+    {@max_score_roll, {:strike_pending, [@max_score_roll], @max_score_roll}}
   end
 
   # strike
-  def bowling_calculator(10, _) do
-    {10, {:strike, [10], 10}}
+  def bowling_calculator(@max_score_roll, _) do
+    {@max_score_roll, {:strike, [@max_score_roll], @max_score_roll}}
   end
 
   # spare
   def bowling_calculator(roll, [{:pending, [last_roll], score_frame} | _])
-      when roll + last_roll == 10 do
+      when  roll + last_roll == @max_score_roll do
     new_score_frame = score_frame + roll
     last_frame = {:spare, [last_roll, roll], new_score_frame}
     {new_score_frame, last_frame}
@@ -136,12 +160,12 @@ defmodule Bowling do
   end
 
   # last roll
-  def bowling_calculator(roll, [{:strike, _, _} | _] = res)
-      when length(res) >= 10 do
+  def bowling_calculator(roll, [{:strike, _, _} | _] = results)
+      when not less_than_ten_frame(results) do
     {roll, {:pending, [roll], roll}}
   end
 
-  def bowling_calculator(roll, res) when length(res) >= 10 do
+  def bowling_calculator(roll, results) when not less_than_ten_frame(results) do
     {roll, {:done, [roll], roll}}
   end
 
@@ -150,16 +174,17 @@ defmodule Bowling do
     {roll, new_frame}
   end
 
-  def update_frame_calculator({:pending, _, _}, results) when length(results) <= 10 do
+  def update_frame_calculator({:pending, _, _}, results) when length(results) <= @ten_frame do
     results
   end
 
   def update_frame_calculator({kind, rolls, score_frame}, [
-        {kind_previous, [10], previous_score_frame} | results
+        {kind_previous, [@max_score_roll], previous_score_frame} | results
       ])
-      when kind_previous == :strike or kind_previous == :strike_pending do
+      when is_strike(kind_previous) or is_strike_pending(kind_previous) do
     [
-      {kind_previous, [10], min(previous_score_frame + (rolls |> Enum.sum()), 30)}
+      {kind_previous, [@max_score_roll],
+       min(previous_score_frame + (rolls |> Enum.sum()), @max_score_frame)}
       | update_frame_calculator({kind, rolls |> Enum.take(1), score_frame}, results)
     ]
   end

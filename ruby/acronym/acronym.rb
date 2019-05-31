@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
+# Acronym Class
 class Acronym
   def self.abbreviate(sentence)
-    sentence.split(/\W+/).map { |word| word[0].upcase }.join
+    sentence.scan(/\b[a-zA-Z]/).map(&:upcase).join
   end
 end

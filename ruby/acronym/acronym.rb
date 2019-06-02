@@ -3,6 +3,6 @@
 # Acronym Class
 class Acronym
   def self.abbreviate(sentence)
-    sentence.scan(/\b[a-zA-Z]/).join.upcase
+    sentence.scan(/\b[[:alpha:]]/).join.upcase
   end
 end

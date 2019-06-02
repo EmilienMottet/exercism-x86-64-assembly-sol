@@ -17,25 +17,27 @@ defmodule SecretHandshake do
   """
   @spec commands(code :: integer) :: list(String.t())
   def commands(code) do
-    tester = [{fn x -> (x &&& 1) == 1 end, "wink"},
-              {fn x -> (x &&& 2) == 2 end, "double blink"},
-            {fn x -> (x &&& 4) == 4 end, "close your eyes"},
-            {fn x -> (x &&& 8) == 8 end, "jump"},
-             ]
+    tester = [
+      {fn x -> (x &&& 1) == 1 end, "wink"},
+      {fn x -> (x &&& 2) == 2 end, "double blink"},
+      {fn x -> (x &&& 4) == 4 end, "close your eyes"},
+      {fn x -> (x &&& 8) == 8 end, "jump"}
+    ]
 
-    res = tester
-    |> Enum.reduce([], fn {f, action}, acc ->
-      if f.(code) do
-        [action | acc]
-      else
-        acc
-      end
-    end)
+    res =
+      tester
+      |> Enum.reduce([], fn {f, action}, acc ->
+        if f.(code) do
+          [action | acc]
+        else
+          acc
+        end
+      end)
 
     if (code &&& 16) == 16 do
       res
     else
-      res |> Enum.reverse
+      res |> Enum.reverse()
     end
   end
 end

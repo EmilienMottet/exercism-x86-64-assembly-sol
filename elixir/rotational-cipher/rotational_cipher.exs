@@ -11,8 +11,8 @@ defmodule RotationalCipher do
     text
     |> to_charlist
     |> Enum.map(fn
-      x when x >= ?a and x <= ?z -> ?a + rem(x + shift - ?a, 26)
-      x when x >= ?A and x <= ?Z -> ?A + rem(x + shift - ?A, 26)
+      x when x in ?a..?z -> ?a + rem(x + shift - ?a, 26)
+      x when x in ?A..?Z -> ?A + rem(x + shift - ?A, 26)
       x -> x
     end)
     |> to_string

@@ -3,7 +3,7 @@
 # Matrix
 class Matrix
   def initialize(args)
-    lines = args.split("\n")
+    lines = args.each_line
     n = lines.count
     @matrix = Array.new(n) { Array.new(n) }
     lines.each_with_index do |line, i|

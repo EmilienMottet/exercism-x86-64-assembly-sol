@@ -2,8 +2,8 @@
 
 # Squares
 class Squares
-  def initialize(args)
-    @num = args
+  def initialize(number)
+    @num = number
   end
 
   def square_of_sum

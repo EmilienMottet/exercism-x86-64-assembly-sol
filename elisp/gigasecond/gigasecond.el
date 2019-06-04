@@ -12,7 +12,7 @@
 (require 'seq)
 
 (defun from (s min h d mon y)
-  (seq-subseq (decode-time (time-add (encode-time s min h d mon y) (seconds-to-time 1000000000))) 0 6))
+  (seq-subseq (decode-time (time-add (encode-time s min h d mon y "ETC") (seconds-to-time 1000000000)) "ETC") 0 6))
 
 
 

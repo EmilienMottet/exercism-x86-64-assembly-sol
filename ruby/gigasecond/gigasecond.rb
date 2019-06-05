@@ -2,10 +2,9 @@
 
 # Gigasecond
 class Gigasecond
+  GIGASECOND = 10**9
 
-  ONE_GIGASECOND = 10**9
-
-  def self.from(date)
-    date + ONE_GIGASECOND
+  def self.from(time)
+    time + GIGASECOND
   end
 end

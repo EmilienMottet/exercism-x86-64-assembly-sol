@@ -2,12 +2,11 @@
 
 # Pangram
 class Pangram
+  ENGLISH_ALPHABET = ('a'..'z').freeze
   def self.pangram?(word)
-    alphabet = 'a'..'z'
     word = word.downcase
-    alphabet.each do |e|
-      return false unless word.include?(e)
+    ENGLISH_ALPHABET.all? do |e|
+      word.include?(e)
     end
-    true
   end
 end

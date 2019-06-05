@@ -1,5 +1,5 @@
 defmodule PigLatin do
-  @vowel ["a", "e", "i", "o", "u"]
+  @vowel ["a", "e", "i", "o", "u", "yt", "yd", "xr", "xb"]
 
   @doc """
   Given a `phrase`, translate it a word at a time to Pig Latin.
@@ -16,62 +16,42 @@ defmodule PigLatin do
   Some groups are treated like vowels, including "yt" and "xr".
   """
   @spec translate(phrase :: String.t()) :: String.t()
-  def translate("a" <> _ = word) do
-    rule_1(word)
+  def translate(words) do
+    words |> String.split() |> Enum.map(fn x -> translate_word(x) end) |> Enum.join(" ")
   end
 
-  def translate("e" <> _ = word) do
-    rule_1(word)
-  end
+  def translate_word(word) do
+    if word |> String.starts_with?(@vowel) do
+      rule_1(word)
+    else
+      {begin_word, end_word} = word |> String.split_at(1)
 
-  def translate("i" <> _ = word) do
-    rule_1(word)
-  end
+      if end_word |> String.contains?("y") &&
+           word
+           |> String.split("y", parts: 2)
+           |> hd
+           |> String.codepoints()
+           |> Enum.all?(fn x -> x not in @vowel end) do
+        [begin_word, end_word] = word |> String.split("y", parts: 2)
+        rule_2("y" <> end_word, begin_word)
+      else
+        if word |> String.starts_with?("qu") || end_word |> String.starts_with?("qu") do
+          [begin_word, end_word] = word |> String.split("qu", parts: 2)
+          rule_3(end_word, begin_word <> "qu")
+        else
+          if word
+             |> String.slice(0, 2)
+             |> String.codepoints()
+             |> Enum.all?(fn x -> x not in @vowel end) do
+            {begin_word, end_word} =
+              word |> String.codepoints() |> Enum.split_while(fn x -> x not in @vowel end)
 
-  def translate("o" <> _ = word) do
-    rule_1(word)
-  end
-
-  def translate("u" <> _ = word) do
-    rule_1(word)
-  end
-
-  def translate("qu" <> _ = word) do
-    rule_1(word)
-  end
-
-  def translate("p" <> end_word) do
-    rule_2(end_word, "p")
-  end
-
-  def translate("k" <> end_word) do
-    rule_2(end_word, "k")
-  end
-
-  def translate("y" <> end_word) do
-    rule_2(end_word, "y")
-  end
-
-  def translate("x" <> end_word) do
-    rule_2(end_word, "x")
-  end
-
-  def translate("q" <> end_word) do
-    if end_word |> String.first() do
-      rule_2(end_word, "q")
-    end
-  end
-
-  def translate("q" <> end_word) do
-    if end_word |> String.first() do
-      rule_2(end_word, "q")
-    end
-  end
-
-  def translate(word) do
-    if word |> Enum.slice(0, 2) |> Enum.all(fn x -> x not in @vowel end) do
-      {begin_word,end_word} = word |> Enum.split_while(fn x -> x not in @vowel end) |> IO.inspect
-      rule_2( end_word , begin_word )
+            rule_2(end_word |> Enum.join(), begin_word |> Enum.join())
+          else
+            rule_2(end_word, begin_word)
+          end
+        end
+      end
     end
   end
 
@@ -81,5 +61,9 @@ defmodule PigLatin do
 
   defp rule_2(end_word, letters) do
     end_word <> letters <> "ay"
+  end
+
+  defp rule_3(end_word, letters) do
+    rule_2(end_word, letters)
   end
 end

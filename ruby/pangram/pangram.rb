@@ -2,10 +2,14 @@
 
 # Pangram
 class Pangram
-  ENGLISH_ALPHABET = ('a'..'z').freeze
+  ALPHABET = %w|
+    a z e r t y u i o p
+    q s d f g h j k l m
+    w x c v b n
+    |
   def self.pangram?(word)
     word = word.downcase
-    ENGLISH_ALPHABET.all? do |l|
+    ALPHABET.all? do |l|
       word.include?(l)
     end
   end

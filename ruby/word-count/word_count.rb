@@ -3,12 +3,12 @@
 # Phrase
 class Phrase
   def initialize(phrase)
-    @phrase = phrase
+    @phrase = phrase.scan(/[\w]+[w']*[\w]*\b/)
   end
 
   def word_count
-    @phrase.scan(/[\w]+[w']*[\w]*\b/).each_with_object(Hash.new(0)) do |w, h|
-      h[w.downcase] += 1
+    @phrase.each_with_object(Hash.new(0)) do |word, h|
+      h[word.downcase] += 1
     end
   end
 end

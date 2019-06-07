@@ -21,38 +21,44 @@ defmodule PigLatin do
   end
 
   def translate_word(word) do
-    if word |> String.starts_with?(@vowel) do
+    if is_rule1(word) do
       rule_1(word)
     else
-      {begin_word, end_word} = word |> String.split_at(1)
-
-      if end_word |> String.contains?("y") &&
-           word
-           |> String.split("y", parts: 2)
-           |> hd
-           |> String.codepoints()
-           |> Enum.all?(fn x -> x not in @vowel end) do
+      if is_rule4(word) do
         [begin_word, end_word] = word |> String.split("y", parts: 2)
-        rule_2("y" <> end_word, begin_word)
+        rule_4(end_word, begin_word)
       else
-        if word |> String.starts_with?("qu") || end_word |> String.starts_with?("qu") do
+        if is_rule3(word) do
           [begin_word, end_word] = word |> String.split("qu", parts: 2)
           rule_3(end_word, begin_word <> "qu")
         else
-          if word
-             |> String.slice(0, 2)
-             |> String.codepoints()
-             |> Enum.all?(fn x -> x not in @vowel end) do
-            {begin_word, end_word} =
-              word |> String.codepoints() |> Enum.split_while(fn x -> x not in @vowel end)
+          {begin_word, end_word} =
+            word |> String.codepoints() |> Enum.split_while(fn x -> x not in @vowel end)
 
-            rule_2(end_word |> Enum.join(), begin_word |> Enum.join())
-          else
-            rule_2(end_word, begin_word)
-          end
+          rule_2(end_word |> Enum.join(), begin_word |> Enum.join())
         end
       end
     end
+  end
+
+  def is_rule1(word) do
+    word |> String.starts_with?(@vowel)
+  end
+
+  def is_rule3(word) do
+    {_, end_word} = word |> String.split_at(1)
+    word |> String.starts_with?("qu") || end_word |> String.starts_with?("qu")
+  end
+
+  def is_rule4(word) do
+    {_, end_word} = word |> String.split_at(1)
+
+    end_word |> String.contains?("y") &&
+      word
+      |> String.split("y", parts: 2)
+      |> hd
+      |> String.codepoints()
+      |> Enum.all?(fn x -> x not in @vowel end)
   end
 
   defp rule_1(word) do
@@ -65,5 +71,9 @@ defmodule PigLatin do
 
   defp rule_3(end_word, letters) do
     rule_2(end_word, letters)
+  end
+
+  def rule_4(end_word, letters) do
+    rule_2("y" <> end_word, letters)
   end
 end

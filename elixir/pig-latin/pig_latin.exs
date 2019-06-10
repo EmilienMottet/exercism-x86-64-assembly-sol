@@ -20,15 +20,15 @@ defmodule PigLatin do
     words |> String.split() |> Enum.map(fn x -> translate_word(x) end) |> Enum.join(" ")
   end
 
-  def translate_word(word) do
-    if is_rule1(word) do
+  defp translate_word(word) do
+    if rule1?(word) do
       rule_1(word)
     else
-      if is_rule4(word) do
+      if rule4?(word) do
         [begin_word, end_word] = word |> String.split("y", parts: 2)
         rule_4(end_word, begin_word)
       else
-        if is_rule3(word) do
+        if rule3?(word) do
           [begin_word, end_word] = word |> String.split("qu", parts: 2)
           rule_3(end_word, begin_word <> "qu")
         else
@@ -41,16 +41,16 @@ defmodule PigLatin do
     end
   end
 
-  def is_rule1(word) do
+  defp rule1?(word) do
     word |> String.starts_with?(@vowel)
   end
 
-  def is_rule3(word) do
+  defp rule3?(word) do
     {_, end_word} = word |> String.split_at(1)
     word |> String.starts_with?("qu") || end_word |> String.starts_with?("qu")
   end
 
-  def is_rule4(word) do
+  defp rule4?(word) do
     {_, end_word} = word |> String.split_at(1)
 
     end_word |> String.contains?("y") &&
@@ -73,7 +73,7 @@ defmodule PigLatin do
     rule_2(end_word, letters)
   end
 
-  def rule_4(end_word, letters) do
+  defp rule_4(end_word, letters) do
     rule_2("y" <> end_word, letters)
   end
 end

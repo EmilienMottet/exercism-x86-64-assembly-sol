@@ -3,7 +3,7 @@
 # Grain
 class Grains
   def self.square(index)
-    raise ArgumentError if (index <= 0) || (index > 64)
+    raise ArgumentError unless (1..64).cover?(index)
 
     2**(index - 1)
   end

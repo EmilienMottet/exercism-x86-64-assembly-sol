@@ -11,7 +11,7 @@
   (apply '+
          (seq-map-indexed
           (lambda (val index)
-            (* (lsh 1 index) (if (eq val ?1) 1 0)))
+            (if (eq val ?1) (lsh 1 index) 0))
           (reverse binary))))
 
 (provide 'binary)

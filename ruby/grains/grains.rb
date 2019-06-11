@@ -2,11 +2,10 @@
 
 # Grain
 class Grains
-  GRAIN_MIN = 1
-  GRAIN_MAX = 64
+  CHESSBOARD = (1..64).freeze
 
   def self.square(index)
-    raise ArgumentError unless (GRAIN_MIN..GRAIN_MAX).cover?(index)
+    raise ArgumentError unless CHESSBOARD.cover?(index)
 
     2**(index - 1)
   end

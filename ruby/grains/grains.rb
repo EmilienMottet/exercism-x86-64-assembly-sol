@@ -11,6 +11,6 @@ class Grains
   end
 
   def self.total
-    (1..64).sum { |i| square(i) }
+    CHESSBOARD.sum { |i| square(i) }
   end
 end

@@ -14,7 +14,7 @@
                  (sort
                   (split-string (downcase sentence)
                                 "[^a-z0-9A-Z]" t)
-                  'string<))))
+                  #'string<))))
 
 (provide 'word-count)
 ;;; word-count.el ends here

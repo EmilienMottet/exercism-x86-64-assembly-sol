@@ -43,7 +43,7 @@ defmodule TwelveDays do
   end
 
   def verses(begin_verse, end_verse) do
-    begin_verse..end_verse |> Enum.map(fn x -> verse(x) end) |> Enum.join("\n")
+    begin_verse..end_verse |> Enum.map(&verse/1) |> Enum.join("\n")
   end
 
   defp build_verse(num, end_sentence) do

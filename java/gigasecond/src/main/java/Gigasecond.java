@@ -4,7 +4,7 @@ import java.time.temporal.ChronoUnit;
 
 class Gigasecond {
 
-  int GIGASECOND = 1000000000;
+  private static final int GIGASECOND = 1000000000;
 
   private LocalDateTime dateTime;
 

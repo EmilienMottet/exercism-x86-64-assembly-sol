@@ -8,17 +8,25 @@
 
 ;;; Code:
 
-(setq robot-set (list))
+(setq robot-table #s(hash-table test equal))
+
+(defun random-digit (_)
+  (string (+ (random (- ?9 ?0)) ?0)))
 
 (defun random-uppercase-letter (_)
   (string (+ (random (- ?Z ?A)) ?A)))
 
+(defun make-robot-name ()
+  (concat (mapconcat #'random-uppercase-letter (number-sequence 0 1) "") (mapconcat #'random-digit (number-sequence 0 2) "")))
+
 (defun build-robot ()
-  (push (seq-map #'random-uppercase-letter (number-sequence 0 1)) robot-set))
+  (let* ((name (make-robot-name))) (puthash name name robot-table)))
 
-(defun robot-name (robot))
+(defun robot-name (robot)
+  (gethash robot robot-table))
 
-(defun robot-reset (robot))
+(defun reset-robot (robot)
+  (puthash robot (make-robot-name) robot-table))
 
 
 (provide 'robot-name)

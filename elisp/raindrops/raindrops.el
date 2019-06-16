@@ -20,11 +20,10 @@
 
 (defun convert (n)
   (let ((res
-         (mapconcat 'identity
-                    (seq-map
-                     (lambda (x) (if (equal (mod n x) 0) (gethash x rain-converter) ""))
-                     (hash-table-keys rain-converter)) "")))
-    (if (equal "" res) (number-to-string n) res)))
+         (mapconcat
+          (lambda (x) (if (equal (mod n x) 0) (gethash x rain-converter) ""))
+          (hash-table-keys rain-converter) "")))
+    (if (string=  "" res) (number-to-string n) res)))
 
 
 

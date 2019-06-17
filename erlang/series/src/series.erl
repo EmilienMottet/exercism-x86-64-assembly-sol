@@ -1,10 +1,11 @@
 -module(series).
 
--export([slices/2,test_version/0]).
+-export([slices/2]).
 
-
+slices(_,[]) ->
+    erlang:error("empty series");
+slices(SliceLength,Series) when (SliceLength =< 0) or (length(Series) < SliceLength) ->
+    erlang:error("bad SliceLength");
 slices(SliceLength, Series) ->
     [ lists:sublist(Series,Index,SliceLength) || Index <- lists:seq(1,length(Series) - SliceLength + 1)].
 
-test_version() ->
-    1.

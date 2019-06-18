@@ -3,7 +3,7 @@ if !System.get_env("EXERCISM_TEST_EXAMPLES") do
 end
 
 ExUnit.start()
-# ExUnit.configure(exclude: :pending, trace: true)
+ExUnit.configure(exclude: :pending, trace: true)
 
 defmodule SublistTest do
   use ExUnit.Case
@@ -12,7 +12,7 @@ defmodule SublistTest do
     assert Sublist.compare([], []) == :equal
   end
 
-  # @tag :pending
+  @tag :pending
   test "empty is a sublist of anything" do
     assert Sublist.compare([], [nil]) == :sublist
   end
@@ -27,7 +27,7 @@ defmodule SublistTest do
     assert Sublist.compare([1], [2]) == :unequal
   end
 
-  # @tag :pending
+  @tag :pending
   test "comparing massive equal lists" do
     l = Enum.to_list(1..1_000_000)
     assert Sublist.compare(l, l) == :equal

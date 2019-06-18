@@ -6,10 +6,6 @@ class Raindrops
 
   def self.convert(number)
     res = RAIN_CONVERTER.map { |k, v| v if (number % k).zero? }.join
-    if res == ''
-      number.to_s
-    else
-      res
-    end
+    res == '' ? number.to_s : res
   end
 end

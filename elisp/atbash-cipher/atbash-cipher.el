@@ -8,28 +8,33 @@
 ;;; Code:
 
 (require 'seq)
+(require 'subr-x)
 
 (defun encode-atbash-char (c)
-  (+ (- ?a 1) (+ (/ (+ 1 (- ?z ?a)) 2)
-                 (/ (- (+ 1 (- ?z ?a))
-                       (* 2
-                          (- c ?a))) 2 ))))
+  (if (and (<= c ?z) (>= c ?a))
+      (+ (- ?a 1) (+ (/ (+ 1 (- ?z ?a)) 2)
+                     (/ (- (+ 1 (- ?z ?a))
+                           (* 2
+                              (- c ?a))) 2 )))
+    c))
 
 (defun format-plaintext (plaintext)
-  (replace-regexp-in-string "[.]$" ""
-                            (replace-regexp-in-string " " "" (downcase plaintext))))
+  (replace-regexp-in-string "," ""
+                            (replace-regexp-in-string "[.]$" ""
+                                                      (replace-regexp-in-string " " "" (downcase plaintext)))))
 
 (defun make-space (txt)
-  (replace-regexp-in-string "\\([a-z]\\{5\\}\\)\\([a-z]\\{5\\}\\)" "\\1 \\2" txt))
+  (string-trim (replace-regexp-in-string "\\([a-z0-9]\\{5\\}\\)" "\\1 " txt)))
 
-(defun make-spaces (encoded_text)
-  (seq-reduce (lambda (a b) (make-space a) )
-              (number-sequence 0 (/ (length encoded_text) 5)) encoded_text))
+(defun interpole-spaces (encoded_text)
+  (seq-reduce (lambda (a) (car a) )
+              (seq-map-indexed (lambda (elt idx) (list idx elt)) encoded_text)  "")
+  )
 
 (defun encode (plaintext)
-  (make-spaces (mapconcat 'string (mapcar
-                                   'encode-atbash-char
-                                   (format-plaintext plaintext)) "")))
+  (make-space (mapconcat 'string (mapcar
+                                  'encode-atbash-char
+                                  (format-plaintext plaintext)) "")))
 
 
   (provide 'atbash-cipher)

@@ -11,7 +11,7 @@
 (require 'subr-x)
 
 (defun encode-atbash-char (c)
-  (if (and (<= c ?z) (>= c ?a))
+  (if (and (<= ?a c ?z))
       (+ (- ?a 1) (+ (/ (+ 1 (- ?z ?a)) 2)
                      (/ (- (+ 1 (- ?z ?a))
                            (* 2
@@ -25,11 +25,6 @@
 
 (defun make-space (txt)
   (string-trim (replace-regexp-in-string "\\([a-z0-9]\\{5\\}\\)" "\\1 " txt)))
-
-(defun interpole-spaces (encoded_text)
-  (seq-reduce (lambda (a) (car a) )
-              (seq-map-indexed (lambda (elt idx) (list idx elt)) encoded_text)  "")
-  )
 
 (defun encode (plaintext)
   (make-space (mapconcat 'string (mapcar

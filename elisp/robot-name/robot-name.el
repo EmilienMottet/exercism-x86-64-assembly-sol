@@ -19,6 +19,10 @@
 (defun make-robot-name ()
   (concat (mapconcat #'random-uppercase-letter (number-sequence 0 1) "") (mapconcat #'random-digit (number-sequence 0 2) "")))
 
+(defun make-uniq-robot-name ()
+  (let ((name (make-robot-name))
+        (while (gethash name robot-table) (setq name (make-robot-name))) name)))
+
 (defun build-robot ()
   (let* ((name (make-robot-name))) (puthash name name robot-table)))
 

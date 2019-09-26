@@ -10,29 +10,17 @@ defmodule BracketPush do
       ?\}, [?\{ | acc] ->
         {:cont, acc}
 
-      ?\}, _ ->
-        {:halt, false}
-
       ?\], [?\[ | acc] ->
         {:cont, acc}
-
-      ?\], _ ->
-        {:halt, false}
 
       ?\), [?\( | acc] ->
         {:cont, acc}
 
-      ?\), _ ->
+      c, _ when c in [?\), ?\], ?\}] ->
         {:halt, false}
 
-      ?\(, acc ->
-        {:cont, [?\( | acc]}
-
-      ?\{, acc ->
-        {:cont, [?\{ | acc]}
-
-      ?\[, acc ->
-        {:cont, [?\[ | acc]}
+      c, acc when c in [?\(, ?\{, ?\[] ->
+        {:cont, [c | acc]}
 
       _, acc ->
         {:cont, acc}

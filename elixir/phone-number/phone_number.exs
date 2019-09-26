@@ -24,6 +24,35 @@ defmodule Phone do
   """
   @spec number(String.t()) :: String.t()
   def number(raw) do
+    if Regex.match?(~r/[a-zA-Z]/, raw) do
+      "0000000000"
+    else
+      n = raw |> String.replace(~r/[^\d]/, "")
+
+      n = extract_ten(n)
+
+      if valid_n(n) do
+        n
+      else
+        "0000000000"
+      end
+    end
+  end
+
+  defp extract_ten(string_with_number) do
+    if string_with_number |> String.length() == 11 && string_with_number |> String.first() == "1" do
+      string_with_number |> String.slice(1..-1)
+    else
+      if string_with_number |> String.length() == 10 do
+        string_with_number
+      else
+        "0000000000"
+      end
+    end
+  end
+
+  defp valid_n(n) do
+    n |> String.at(0) |> String.to_integer() > 1 && n |> String.at(3) |> String.to_integer() > 1
   end
 
   @doc """
@@ -48,6 +77,7 @@ defmodule Phone do
   """
   @spec area_code(String.t()) :: String.t()
   def area_code(raw) do
+    number(raw) |> String.slice(0,3)
   end
 
   @doc """
@@ -72,5 +102,7 @@ defmodule Phone do
   """
   @spec pretty(String.t()) :: String.t()
   def pretty(raw) do
+    n = number(raw)
+    "(#{area_code(raw)}) #{String.slice(n,3,3)}-#{String.slice(n,6,4)}"
   end
 end

@@ -3,11 +3,28 @@
 -export([rows/1]).
 
 %% A = 65
-rows_demi([65]) -> [[32,65,32]];
-rows_demi([L]) -> lists:map(fun (X) -> [32] ++ X ++ [32] end,rows_demi([L-1])) ++ [[32,L] ++ lists:map(fun (_) -> 32  end,lists:seq(0, (L - 1 - 65) * 2)) ++ [L,32] ].
+space_out(L,Size) -> [L | lists:duplicate(Size, $\s)] ++ [L].
 
+outer(Size) ->
+    lists:duplicate(Size, $\s).
 
-rows([65]) ->
-    [[65]];
+row($A,Width) ->
+    Outer = outer(Width div 2),
+    [ Outer ++ "A" ++ Outer ];
+row(L, Width) ->
+    Size = (L - 1 - $A) * 2 + 1,
+    Outer = outer(( Width - Size - 2 ) div 2),
+    Middle = space_out(L,Size),
+    [ Outer ++ Middle ++ Outer ].
+
+gen_rows($A , Width ) ->
+    row($A,Width);
+gen_rows(L, Width) ->
+    gen_rows(L-1, Width) ++ row(L,Width).
+
+rows("A") ->
+    [ "A" ];
 rows([L]) ->
-    rows_demi([L - 1]) ++ [[L] ++ lists:map(fun (_) -> 32  end,lists:seq(0, (L - 1 - 65) * 2)) ++ [L] ] ++ lists:reverse(rows_demi([L - 1])).
+    Width = (L - $A) * 2 + 1,
+    First = gen_rows(L-1,Width), 
+    First ++ row(L,Width) ++ lists:reverse(First).

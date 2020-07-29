@@ -17,16 +17,28 @@ defmodule Change do
 
   @spec generate(list, integer) :: {:ok, list} | {:error, String.t()}
   def generate(coins, target) do
-    do_generate(coins |> Enum.reverse(),target,[])
+    coins = coins |> Enum.sort() |> Enum.reverse()
+    case do_generate(coins, target, []) do
+      nil -> {:error, "cannot change"}
+      res -> {:ok, res}
+    end
   end
 
-  def do_generate(coins, coin, target, acc) when coin > target do
-    :error
+  defguardp is_new_best?(current,candidate) when length(candidate) < length(current) or ( length(candidate) == length(current) and candidate < current )
+
+  def do_generate(_coins, 0, acc) do
+    acc |> Enum.sort()
   end
-  def do_generate(coins, 0, acc) do
-    {:ok, acc}
+  def do_generate([], _target, _acc) do
+    nil
   end
-  def do_generate( coins, target, acc) do
-    do_generate(coins, target - h , [ h | acc])
+
+  def do_generate(coins, target, result) do
+    result ++ coins
+    |> Enum.reduce([], fn coin, acc ->
+      count = div(target,coin)
+      acc ++ List.duplicate(coin, count)
+      do_generate(coins, target, acc)
+    end)
   end
 end

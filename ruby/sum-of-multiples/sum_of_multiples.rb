@@ -2,13 +2,13 @@
 
 # SumOfMultiples
 class SumOfMultiples
-  def initialize(*args)
-    @target = args
+  def initialize(*multiples)
+    @multiples = multiples
   end
 
   def to(end_range)
-    (1..(end_range - 1)).sum do |number|
-      @target.any? { |t| (number % t).zero? } ? number : 0
+    (1...end_range).sum do |number|
+      @multiples.any? { |t| (number % t).zero? } ? number : 0
     end
   end
 end

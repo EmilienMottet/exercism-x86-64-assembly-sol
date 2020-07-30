@@ -3,7 +3,7 @@
 # Isogram
 class Isogram
   def self.isogram?(word)
-    word.downcase.gsub(/[^0-9a-z]/i, '').chars.uniq.size \
-     == word.downcase.gsub(/[^0-9a-z]/i, '').size
+    clean_word = word.downcase.gsub(/[^0-9a-z]/i, '')
+    clean_word.chars.uniq.size == clean_word.size
   end
 end

@@ -1,2 +1,7 @@
 *.exercism/
 users/
+
+# java
+**/.settings/
+**/.classpath
+**/.project

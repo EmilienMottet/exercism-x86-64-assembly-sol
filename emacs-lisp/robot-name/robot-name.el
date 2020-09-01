@@ -28,16 +28,13 @@
                      (number-sequence 0 2)
                      "")))
 
-(defun make-uniq-robot-name ()
+(defun make-robot-name ()
   (let ((name (generate-robot-name)))
     (while (gethash name
                     robot-table)
       (setq name
-            (make-robot-name)))
+            (generate-robot-name)))
     name))
-
-(defun make-robot-name ()
-  (make-uniq-robot-name))
 
 (defun build-robot ()
   (let* ((name (make-robot-name)))

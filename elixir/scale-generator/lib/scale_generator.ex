@@ -40,7 +40,12 @@ defmodule ScaleGenerator do
   "C" should generate: ~w(C C# D D# E F F# G G# A A# B C)
   """
   @spec chromatic_scale(tonic :: String.t()) :: list(String.t())
+  @chromatic_scale ~w(C C# D D# E F F# G G# A A# B)
   def chromatic_scale(tonic \\ "C") do
+    tonic = tonic |> String.upcase()
+    index_start = @chromatic_scale |> Enum.find_index(fn x -> x == tonic end)
+    chromatic_scale_length = @chromatic_scale |> length()
+    @chromatic_scale |> Stream.cycle() |> Enum.slice(index_start, chromatic_scale_length + 1)
   end
 
   @doc """
@@ -56,7 +61,15 @@ defmodule ScaleGenerator do
   "C" should generate: ~w(C Db D Eb E F Gb G Ab A Bb B C)
   """
   @spec flat_chromatic_scale(tonic :: String.t()) :: list(String.t())
+  @flat_chromatic_scale ~w(C Db D Eb E F Gb G Ab A Bb B)
   def flat_chromatic_scale(tonic \\ "C") do
+    tonic = tonic |> String.upcase()
+
+    index_start =
+      @flat_chromatic_scale |> Enum.find_index(fn x -> x |> String.upcase() == tonic end)
+
+    chromatic_scale_length = @flat_chromatic_scale |> length()
+    @flat_chromatic_scale |> Stream.cycle() |> Enum.slice(index_start, chromatic_scale_length + 1)
   end
 
   @doc """
@@ -70,7 +83,13 @@ defmodule ScaleGenerator do
   For all others, use the regular chromatic scale.
   """
   @spec find_chromatic_scale(tonic :: String.t()) :: list(String.t())
-  def find_chromatic_scale(tonic) do
+  @use_flat ~w(F Bb Eb Ab Db Gb d g c f bb eb)
+  def find_chromatic_scale(tonic) when tonic in @use_flat do
+    flat_chromatic_scale(tonic)
+  end
+
+  def find_chromatic_scale(tonic) when tonic not in @use_flat do
+    chromatic_scale(tonic)
   end
 
   @doc """
@@ -86,5 +105,17 @@ defmodule ScaleGenerator do
   """
   @spec scale(tonic :: String.t(), pattern :: String.t()) :: list(String.t())
   def scale(tonic, pattern) do
+    chromatic_scale = find_chromatic_scale(tonic)
+    tonic = chromatic_scale |> hd()
+
+    {_, generated} =
+      pattern
+      |> String.graphemes()
+      |> Enum.reduce({tonic, []}, fn step, {t, acc} ->
+        next_tonic = step(chromatic_scale, t, step)
+        {next_tonic, [next_tonic | acc]}
+      end)
+
+    [tonic | generated |> Enum.reverse()]
   end
 end

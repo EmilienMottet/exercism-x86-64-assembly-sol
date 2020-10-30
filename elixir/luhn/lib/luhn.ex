@@ -24,7 +24,7 @@ defmodule Luhn do
   defguardp is_string_integer(integer)
             when integer in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
-  defp apply_doubling(_number_size, [h | _t], acc) when not is_string_integer(h) do
+  defp apply_doubling(_number_size, [h | _t], _acc) when not is_string_integer(h) do
     false
   end
 

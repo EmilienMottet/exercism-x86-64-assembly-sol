@@ -5,7 +5,7 @@
 clean_isbn_key($X) ->
     10;
 clean_isbn_key(X) ->
-    X - 48 .
+    X - 48.
 
 clean_isbn_body(Isbn) ->
     [X - 48 || X <- Isbn, X >= $0, X =< $9].

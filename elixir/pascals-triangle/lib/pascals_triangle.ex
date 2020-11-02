@@ -10,14 +10,15 @@ defmodule PascalsTriangle do
         acc
 
       line, lines = [previous_line | _t] ->
-        new_line =
-          ([0] ++ previous_line ++ [0])
-          |> Stream.chunk_every(2, 1)
-          |> Stream.take(line)
-          |> Enum.map(fn [left, right] -> left + right end)
-
+        new_line = row(previous_line)
         [new_line | lines]
     end)
     |> Enum.reverse()
+  end
+
+  defp row(previous_line) do
+    ([0] ++ previous_line ++ [0])
+    |> Stream.chunk_every(2, 1, :discard)
+    |> Enum.map(fn [left, right] -> left + right end)
   end
 end

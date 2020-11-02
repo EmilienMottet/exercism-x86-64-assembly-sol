@@ -9,7 +9,7 @@ defmodule PascalsTriangle do
       1, acc ->
         acc
 
-      line, lines = [previous_line | _t] ->
+      _line, lines = [previous_line | _t] ->
         new_line = row(previous_line)
         [new_line | lines]
     end)

@@ -9,7 +9,7 @@ defmodule Queens do
   Creates a new set of Queens
   """
   @spec new(Keyword.t()) :: Queens.t()
-  def do_new([{color, pos = {x, y}} | t], acc)
+  defp do_new([{color, pos = {x, y}} | t], acc)
       when color in [:black, :white] and x >= @min_index and x <= @max_index and y >= @min_index and
              y <= @max_index do
     queen = %{color => pos}
@@ -23,11 +23,11 @@ defmodule Queens do
     do_new(t, struct(Queens, merged))
   end
 
-  def do_new([], acc) do
+  defp do_new([], acc) do
     acc
   end
 
-  def do_new(_, _) do
+  defp do_new(_, _) do
     raise ArgumentError
   end
 

@@ -5,13 +5,9 @@ defmodule Queens do
   @min_index 0
   @max_index 7
 
-  @doc """
-  Creates a new set of Queens
-  """
-  @spec new(Keyword.t()) :: Queens.t()
   defp do_new([{color, pos = {x, y}} | t], acc)
-      when color in [:black, :white] and x >= @min_index and x <= @max_index and y >= @min_index and
-             y <= @max_index do
+  when color in [:black, :white] and x >= @min_index and x <= @max_index and y >= @min_index and
+  y <= @max_index do
     queen = %{color => pos}
 
     merged =
@@ -31,6 +27,10 @@ defmodule Queens do
     raise ArgumentError
   end
 
+  @doc """
+  Creates a new set of Queens
+  """
+  @spec new(Keyword.t()) :: Queens.t()
   def new(opts \\ []) do
     res = do_new(opts, %Queens{})
 

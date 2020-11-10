@@ -10,7 +10,9 @@ advance(Robot) ->
     put(Robot, {Direction, {Xa + Xb, Ya + Yb}}).
 
 create() ->
-    make_ref().
+    spawn(fun () ->
+                  loop({undefined, {undefined, undefined}})
+          end).
 
 direction(Robot) ->
     {Direction, _Position} = get(Robot),

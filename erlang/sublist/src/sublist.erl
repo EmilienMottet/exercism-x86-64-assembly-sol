@@ -11,27 +11,25 @@ is_sublist(L1, L2) when length(L2) < length(L1) ->
     false;
 is_sublist([], _L2) ->
     true;
-is_sublist(L1 = [H | _T], L2) ->
-    DroppedList = lists:dropwhile(fun (X) when X =/= H ->
-                                          true;
-                                      (_) ->
-                                          false
-                                  end,
-                                  L2),
-    case DroppedList of
-      [_ | T] ->
-          is_equal(L1, lists:sublist(DroppedList, length(L1))) or is_sublist(L1, T);
-      [] ->
-          false
-    end.
+is_sublist(L1 = [H | T1], [H | T2]) ->
+    is_ordered_sublist(T1, T2) orelse is_sublist(L1, T2);
+is_sublist(L1, [_H | T2]) ->
+    is_sublist(L1, T2).
+
+is_ordered_sublist(L1, L2) when length(L2) < length(L1) ->
+    false;
+is_ordered_sublist([], _L2) ->
+    true;
+is_ordered_sublist([H | T1], [H | T2]) ->
+    is_ordered_sublist(T1, T2);
+is_ordered_sublist(_L1, _L2) ->
+    false.
 
 is_superlist(L1, L2) ->
     is_sublist(L2, L1).
 
-is_unequal(L1, L1) ->
-    false;
-is_unequal(_L1, _L2) ->
-    true.
+is_unequal(L1, L2) ->
+    not is_equal(L1, L2).
 
 relation(L1, L2) ->
     case {is_equal(L1, L2), is_sublist(L1, L2), is_superlist(L1, L2), is_unequal(L1, L2)} of
@@ -44,3 +42,4 @@ relation(L1, L2) ->
       {false, false, false, true} ->
           unequal
     end.
+

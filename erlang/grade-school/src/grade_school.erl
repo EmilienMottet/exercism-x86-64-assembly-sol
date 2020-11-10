@@ -42,8 +42,6 @@ loop(School) ->
           From ! [Name || {Name, _Grade} <- School],
           loop(School);
       {add, {Name, Grade}} ->
-          loop([{Name, Grade} | School]);
-      _ ->
-          loop(School)
+          loop([{Name, Grade} | School])
     end.
 

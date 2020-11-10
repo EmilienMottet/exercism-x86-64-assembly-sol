@@ -35,3 +35,10 @@ right(Robot) ->
     Direction = direction(Robot),
     put(Robot, {maps:get(Direction, Map), position(Robot)}).
 
+
+loop(Robot) ->
+    receive
+
+        _ ->
+            loop(Robot)
+    end.

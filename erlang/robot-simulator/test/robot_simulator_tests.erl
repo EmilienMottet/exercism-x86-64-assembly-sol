@@ -225,4 +225,4 @@
     robot_simulator:place(Robot, north, {0, 0}),
     Self = self(),
     spawn(fun() -> Self ! robot_simulator:direction(Robot) end),
-    receive Direction -> Direction end.
+    {"", ?_assertEqual(north, receive Direction -> Direction end ) }.

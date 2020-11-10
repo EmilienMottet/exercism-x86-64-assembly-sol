@@ -219,3 +219,10 @@
      {"moving east and north (position)",
       ?_assertEqual({11, 5},
 		    robot_simulator:position(Robot))}].
+
+'19_differents_process_test_'() ->
+    Robot = robot_simulator:create(),
+    robot_simulator:place(Robot, north, {0, 0}),
+    Self = self(),
+    spawn(fun() -> Self ! robot_simulator:direction(Robot) end),
+    receive Direction -> Direction end.

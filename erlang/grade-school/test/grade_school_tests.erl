@@ -74,3 +74,10 @@
     {"Grade returns an empty list if there "
      "are no students in that grade",
      ?_assertEqual([], lists:sort(grade_school:get(1, S0)))}.
+
+'8_process_test_'() ->
+    S = grade_school:new(),
+    spawn(fun() -> grade_school:add("Aimee", 2, S) end),
+    spawn(fun() -> grade_school:add("Brujo", 3, S) end),
+    receive after 100 -> waited end,
+    ?assertEqual(["Aimee", "Brujo"], lists:sort(grade_school:get(S))).

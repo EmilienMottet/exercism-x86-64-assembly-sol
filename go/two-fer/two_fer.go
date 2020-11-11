@@ -1,9 +1,9 @@
-// Classical: "One for X, one for me."
+// Package twofer is classical: "One for X, one for me."
 package twofer
 
 import "fmt"
 
-// twofer main function
+// ShareWith is twofer main function
 func ShareWith(name string) string {
 	if name == "" {
 		name = "you"

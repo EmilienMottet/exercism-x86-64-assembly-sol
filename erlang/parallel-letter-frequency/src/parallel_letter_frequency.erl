@@ -11,7 +11,7 @@ dict(Strings) ->
     Pids = [spawn_link(fun() -> S ! freq(Str) end) || Str <- Strings],
     lists:foldr(fun(D, Acc) -> dict:merge(fun(_Key, V1, V2) -> V1 + V2 end, D, Acc) end,
                 dict:new(),
-                lists:map(fun(Pid) -> loop(Pid) end, Pids)).
+                lists:map(fun loop/1, Pids)).
 
 loop(Pid) ->
     receive

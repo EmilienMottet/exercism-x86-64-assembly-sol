@@ -29,7 +29,7 @@ _strlen:
     xor rcx, rcx
 _strlen_while:
     cmp   [rdi], byte 0
-    je    _strlen_end
+    jz    _strlen_end
     inc   rcx
     inc   rdi
     jmp   _strlen_while

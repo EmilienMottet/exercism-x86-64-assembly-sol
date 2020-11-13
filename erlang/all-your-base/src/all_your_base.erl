@@ -16,17 +16,11 @@ rebase(_Digits, _InputBase, OutputBase) when OutputBase < 2 ->
 rebase([], _InputBase, _OutputBase) ->
     {ok, [0]};
 rebase(Digits, InputBase, OutputBase) ->
-    case {lists:all(fun (X) when X < InputBase andalso X >= 0 ->
-                            true;
-                        (_) ->
-                            false
-                    end,
-                    Digits)}
-    of
-        {false} ->
+    case lists:all(fun(X) -> X < InputBase andalso X >= 0 end, Digits) of
+        false ->
             {error, "all digits must satisfy 0 <= d < input base"};
-        {true} ->
-            C = lists:foldr(fun({X, I}, Acc) -> Acc + X * round(math:pow(InputBase, I)) end,
+        true ->
+            C = lists:foldr(fun({X, I}, Acc) -> Acc + X * trunc(math:pow(InputBase, I)) end,
                             0,
                             lists:zip(
                                 lists:reverse(Digits), lists:seq(0, length(Digits) - 1))),

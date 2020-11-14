@@ -1,0 +1,5 @@
+generate_gitlab-ci:
+  stage: build
+  script:
+    - echo "hello world"
+

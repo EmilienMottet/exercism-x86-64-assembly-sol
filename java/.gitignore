@@ -19,3 +19,8 @@
 
 **/build/
 .gradle
+
+# java
+**/.settings/
+**/.classpath
+**/.project

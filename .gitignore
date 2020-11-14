@@ -1,7 +1,3 @@
 *.exercism/
 users/
-
-# java
-**/.settings/
-**/.classpath
-**/.project
+.tool-versions

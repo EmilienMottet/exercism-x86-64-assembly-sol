@@ -1,3 +1,5 @@
 erlang:
+  stage: test
   trigger:
-    include: erlang/.gitlab-ci.yml
+    project: erlang
+    strategy: depend

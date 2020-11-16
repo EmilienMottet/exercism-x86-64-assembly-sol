@@ -1,3 +1,15 @@
+ruby:
+  stage: test
+  trigger:
+    project: EmilienMottet/exercism-ruby-sol
+    strategy: depend
+
+elixir:
+  stage: test
+  trigger:
+    project: EmilienMottet/exercism-elixir-sol
+    strategy: depend
+
 erlang:
   stage: test
   trigger:

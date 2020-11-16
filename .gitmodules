@@ -4,3 +4,6 @@
 [submodule "elixir"]
 	path = elixir
 	url = git@github.com:EmilienMottet/exercism-elixir-sol.git
+[submodule "ruby"]
+	path = ruby
+	url = git@github.com:EmilienMottet/exercism-ruby-sol.git

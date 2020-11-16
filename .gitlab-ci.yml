@@ -1,3 +1,9 @@
+x86-64:
+  stage: test
+  trigger:
+    project: EmilienMottet/exercism-x86-64-sol
+    strategy: depend
+
 rust:
   stage: test
   trigger:

@@ -19,3 +19,6 @@
 [submodule "rust"]
 	path = rust
 	url = git@github.com:EmilienMottet/exercism-rust-sol.git
+[submodule "x86-64-assembly"]
+	path = x86-64-assembly
+	url = git@github.com:EmilienMottet/exercism-x86-64-sol.git

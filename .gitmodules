@@ -7,3 +7,6 @@
 [submodule "ruby"]
 	path = ruby
 	url = git@github.com:EmilienMottet/exercism-ruby-sol.git
+[submodule "clojure"]
+	path = clojure
+	url = git@github.com:EmilienMottet/exercism-clojure-sol.git

@@ -10,3 +10,6 @@
 [submodule "clojure"]
 	path = clojure
 	url = git@github.com:EmilienMottet/exercism-clojure-sol.git
+[submodule "go"]
+	path = go
+	url = git@github.com:EmilienMottet/exercism-go-sol.git

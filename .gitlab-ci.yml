@@ -2,4 +2,5 @@ erlang:
   stage: test
   trigger:
     project: erlang
+    branch: master
     strategy: depend

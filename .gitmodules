@@ -13,3 +13,6 @@
 [submodule "go"]
 	path = go
 	url = git@github.com:EmilienMottet/exercism-go-sol.git
+[submodule "java"]
+	path = java
+	url = git@github.com:EmilienMottet/exercism-java-sol.git

@@ -1,3 +1,21 @@
+java:
+  stage: test
+  trigger:
+    project: EmilienMottet/exercism-java-sol
+    strategy: depend
+
+go:
+  stage: test
+  trigger:
+    project: EmilienMottet/exercism-go-sol
+    strategy: depend
+
+clojure:
+  stage: test
+  trigger:
+    project: EmilienMottet/exercism-clojure-sol
+    strategy: depend
+
 ruby:
   stage: test
   trigger:

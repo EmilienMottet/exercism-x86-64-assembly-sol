@@ -1,3 +1,6 @@
 [submodule "erlang"]
 	path = erlang
 	url = git@github.com:EmilienMottet/exercism-erlang-sol.git
+[submodule "elixir"]
+	path = elixir
+	url = git@github.com:EmilienMottet/exercism-elixir-sol.git

@@ -1,6 +1,5 @@
 erlang:
   stage: test
   trigger:
-    project: erlang
-    branch: master
+    project: EmilienMottet/exercism-erlang-sol
     strategy: depend

@@ -1,3 +1,9 @@
+rust:
+  stage: test
+  trigger:
+    project: EmilienMottet/exercism-rust-sol
+    strategy: depend
+
 java:
   stage: test
   trigger:

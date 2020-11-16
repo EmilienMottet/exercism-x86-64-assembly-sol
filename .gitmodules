@@ -16,3 +16,6 @@
 [submodule "java"]
 	path = java
 	url = git@github.com:EmilienMottet/exercism-java-sol.git
+[submodule "rust"]
+	path = rust
+	url = git@github.com:EmilienMottet/exercism-rust-sol.git

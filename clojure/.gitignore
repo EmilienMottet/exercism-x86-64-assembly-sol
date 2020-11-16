@@ -13,3 +13,4 @@
 */.nrepl-port
 */.cpcache/
 
+*.exercism/

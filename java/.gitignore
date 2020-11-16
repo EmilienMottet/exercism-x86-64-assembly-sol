@@ -24,3 +24,5 @@
 **/.settings/
 **/.classpath
 **/.project
+
+*.exercism/

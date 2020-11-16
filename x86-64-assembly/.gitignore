@@ -54,3 +54,6 @@ dkms.conf
 tests
 .ccls-cache
 .gdb_history
+
+
+*.exercism/

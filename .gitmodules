@@ -22,3 +22,6 @@
 [submodule "x86-64-assembly"]
 	path = x86-64-assembly
 	url = git@github.com:EmilienMottet/exercism-x86-64-sol.git
+[submodule "emacs-lisp"]
+	path = emacs-lisp
+	url = git@github.com:EmilienMottet/exercism-elisp-sol.git

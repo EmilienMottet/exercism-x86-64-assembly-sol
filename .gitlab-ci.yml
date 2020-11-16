@@ -1,3 +1,9 @@
+elisp:
+  stage: test
+  trigger:
+    project: EmilienMottet/exercism-elisp-sol
+    strategy: depend
+
 x86-64:
   stage: test
   trigger:

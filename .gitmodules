@@ -25,3 +25,9 @@
 [submodule "emacs-lisp"]
 	path = emacs-lisp
 	url = git@github.com:EmilienMottet/exercism-elisp-sol.git
+[submodule "c"]
+	path = c
+	url = git@github.com:EmilienMottet/exercism-c-sol.git
+[submodule "cpp"]
+	path = cpp
+	url = git@github.com:EmilienMottet/exercism-cpp-sol.git

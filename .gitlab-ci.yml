@@ -3,96 +3,96 @@ elisp:
   trigger:
     project: EmilienMottet/exercism-elisp-sol
     strategy: depend
-    rules:
-      - changes:
-          - elisp/*
+  rules:
+    - changes:
+        - elisp/*
 
 x86-64:
   stage: test
   trigger:
     project: EmilienMottet/exercism-x86-64-sol
     strategy: depend
-    rules:
-      - changes:
-          - x86-64/*
+  rules:
+    - changes:
+        - x86-64/*
 
 rust:
   stage: test
   trigger:
     project: EmilienMottet/exercism-rust-sol
     strategy: depend
-    rules:
-      - changes:
-          - rust/*
+  rules:
+    - changes:
+        - rust/*
 
 java:
   stage: test
   trigger:
     project: EmilienMottet/exercism-java-sol
     strategy: depend
-    rules:
-      - changes:
-          - java/*
+  rules:
+    - changes:
+        - java/*
 
 go:
   stage: test
   trigger:
     project: EmilienMottet/exercism-go-sol
     strategy: depend
-    rules:
-      - changes:
-          - go/*
+  rules:
+    - changes:
+        - go/*
 
 clojure:
   stage: test
   trigger:
     project: EmilienMottet/exercism-clojure-sol
     strategy: depend
-    rules:
-      - changes:
-          - clojure/*
+  rules:
+    - changes:
+        - clojure/*
 
 ruby:
   stage: test
   trigger:
     project: EmilienMottet/exercism-ruby-sol
     strategy: depend
-    rules:
-      - changes:
-          - ruby/*
+  rules:
+    - changes:
+        - ruby/*
 
 elixir:
   stage: test
   trigger:
     project: EmilienMottet/exercism-elixir-sol
     strategy: depend
-    rules:
-      - changes:
-          - elixir/*
+  rules:
+    - changes:
+        - elixir/*
 
 cpp:
   stage: test
   trigger:
     project: EmilienMottet/exercism-cpp-sol
     strategy: depend
-    rules:
-      - changes:
-          - cpp/*
+  rules:
+    - changes:
+        - cpp/*
 
 c:
   stage: test
   trigger:
     project: EmilienMottet/exercism-c-sol
     strategy: depend
-    rules:
-      - changes:
-          - c/*
+  rules:
+    - changes:
+        - c/*
 
 erlang:
   stage: test
   trigger:
     project: EmilienMottet/exercism-erlang-sol
     strategy: depend
-    rules:
-      - changes:
-          - erlang/*
+  rules:
+    - changes:
+        - erlang/*

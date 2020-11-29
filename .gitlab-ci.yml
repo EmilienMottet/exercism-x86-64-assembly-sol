@@ -46,6 +46,18 @@ elixir:
     project: EmilienMottet/exercism-elixir-sol
     strategy: depend
 
+cpp:
+  stage: test
+  trigger:
+    project: EmilienMottet/exercism-cpp-sol
+    strategy: depend
+
+c:
+  stage: test
+  trigger:
+    project: EmilienMottet/exercism-c-sol
+    strategy: depend
+
 erlang:
   stage: test
   trigger:

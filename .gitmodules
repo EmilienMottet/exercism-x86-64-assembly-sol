@@ -34,10 +34,6 @@
 	path = emacs-lisp
 	url = git@github.com:EmilienMottet/exercism-elisp-sol.git
 	branch = master
-[submodule "c"]
-	path = c
-	url = git@github.com:EmilienMottet/exercism-c-sol.git
-	branch = master
 [submodule "cpp"]
 	path = cpp
 	url = git@github.com:EmilienMottet/exercism-cpp-sol.git

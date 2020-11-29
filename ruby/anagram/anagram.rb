@@ -1,16 +1,17 @@
-# frozen_string_literal: true
-
-# Anagram
 class Anagram
+  private
+
+  attr_accessor :word, :sorted_word
+
   def initialize(word)
     @word = word
     @sorted_word = word.downcase.chars.sort
   end
 
-  def match(list_word)
-    list_word.select do |a_word|
-      a_word.downcase.chars.sort == @sorted_word \
-      && a_word.downcase != @word.downcase
+  def match(words)
+    words.select do |word|
+      word.downcase.chars.sort == sorted_word \
+      && word.downcase != @word.downcase
     end
   end
 end

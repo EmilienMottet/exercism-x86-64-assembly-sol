@@ -8,6 +8,8 @@ class Anagram
     @sorted_word = word.downcase.chars.sort
   end
 
+  public
+
   def match(words)
     words.select do |word|
       word.downcase.chars.sort == sorted_word \

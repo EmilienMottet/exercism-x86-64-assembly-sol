@@ -1,0 +1,28 @@
+# Created by https://www.gitignore.io/api/java
+# Edit at https://www.gitignore.io/?templates=java
+
+### Java ###
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# Package Files #
+*.jar
+
+# End of https://www.gitignore.io/api/java
+
+
+# Created by https://www.gitignore.io/api/erlang
+# Edit at https://www.gitignore.io/?templates=erlang
+
+**/build/
+.gradle
+
+# java
+**/.settings/
+**/.classpath
+**/.project
+
+*.exercism/

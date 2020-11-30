@@ -6,9 +6,8 @@ bool is_armstrong_number(int candidate) {
     return true;
   }
 
-  int acc = candidate, d = acc % 10, power = log10(acc) + 1,
+  int acc = candidate / 10, d = candidate % 10, power = log10(candidate) + 1,
       sum = pow(d, power);
-  acc = acc / 10;
   while (acc != 0) {
     d = acc % 10;
     acc /= 10;

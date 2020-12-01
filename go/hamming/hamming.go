@@ -6,9 +6,9 @@ import (
 
 // Distance between 2 strands
 func Distance(a, b string) (int, error) {
-	var lenA = len(a)
-	if lenA != len(b) {
-		return -1, errors.New("strand should have the same longer")
+	var lenA = len([]rune(a))
+	if lenA != len([]rune(b)) {
+		return 0, errors.New("strand should have the same longer")
 	}
 
 	var ct = 0

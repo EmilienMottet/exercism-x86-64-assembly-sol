@@ -1,9 +1,0 @@
-### Erlang ###
-*.o
-*.beam
-*.plt
-*/_build
-
-# End of https://www.gitignore.io/api/erlang
-  
-*.exercism/

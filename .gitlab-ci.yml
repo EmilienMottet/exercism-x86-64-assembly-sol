@@ -1,20 +1,20 @@
-elisp:
+emacs-lisp:
   stage: test
   trigger:
-    project: EmilienMottet/exercism-elisp-sol
+    project: EmilienMottet/exercism-emacs-lisp-sol
     strategy: depend
   rules:
     - changes:
-        - elisp/*
+        - emacs-lisp/*
 
-x86-64:
+x86-64-assembly:
   stage: test
   trigger:
-    project: EmilienMottet/exercism-x86-64-sol
+    project: EmilienMottet/exercism-x86-64-assembly-sol
     strategy: depend
   rules:
     - changes:
-        - x86-64/*
+        - x86-64-assembly/*
 
 rust:
   stage: test

@@ -28,8 +28,8 @@ testA:
     mov [rsi], al
     jmp increment_register
 increment_register:
-    add rsi, 1
-    add rdi, 1
+    inc rsi
+    inc rdi
     jmp to_rna
 end:
     mov al, 0

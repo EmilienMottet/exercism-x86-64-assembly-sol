@@ -21,13 +21,14 @@ end:
     ret
 
 _strlen:
-    xor rcx, rcx                ; init counter to 0
-_strlen_while:
+    xor rcx, rcx
     cmp   [rdi], byte 0
     jz    _strlen_end
+_strlen_while:
     inc   rcx
     inc   rdi
-    jmp   _strlen_while
+    cmp   [rdi], byte 0
+    jne    _strlen_while
 
 _strlen_end:
     mov   rax, rcx

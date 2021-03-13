@@ -1,7 +1,7 @@
 section .text
 global leap_year
 leap_year:
-    ; year % 4 == 0
+    ; year % 4 == 0 
     mov rsi, 4
     call modulo
     test rax, rax

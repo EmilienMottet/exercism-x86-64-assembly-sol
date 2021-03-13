@@ -25,7 +25,7 @@ local JobHandler(name) = {
     },
     script: [
       'DIR_SPLIT=$(echo $DIR_TO_BE_TESTED | tr " " "\n")',
-      'jsonnet -m . --ext-str exercism_projects=$DIR_SPLIT --ext-str lang="' + lang + '" ".' + lang + '-gitlab-ci.jsonnet"',
+      'jsonnet -m . --ext-str exercism_projects="$DIR_SPLIT" --ext-str lang="' + lang + '" ".' + lang + '-gitlab-ci.jsonnet"',
     ],
     needs: [
       {

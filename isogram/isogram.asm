@@ -2,7 +2,8 @@ default rel
 section .text
 global is_isogram
 is_isogram:
-    mov r8d, [alphabet]
+    lea r8, [rel alphabet]
+    mov r8d, [r8]
 .while:
     cmp [rdi],byte 0
     jz .end_true
@@ -38,7 +39,7 @@ is_isogram:
     mov r9b, 'A'
     cmp  al, r9b,
     jg .end_lower
-    add al, byte 0x20           ; 0x20 = 'a' - 'A'
+    add al, byte 'a' - 'A'
 .end_lower:
     ret
 

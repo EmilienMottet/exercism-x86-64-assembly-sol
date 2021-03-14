@@ -20,7 +20,7 @@ color_code:
     lea rdx, [ all_colors ]
     xor rcx, rcx
 _while:
-    mov rsi, rdx[rcx * 8]
+    mov rsi, [rdx + rcx * 8]
     call _strcmp
     test rax, rax
     jnz _end

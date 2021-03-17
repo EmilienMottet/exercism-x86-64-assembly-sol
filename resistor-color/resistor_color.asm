@@ -42,13 +42,12 @@ _strcmp_while:
     inc	rsi
     mov al, byte[rsi]
     cmp	al, byte[rdi]
-    jne	_strcmp_false
-    jmp _strcmp_while
-_strcmp_true:
-    mov   rax, 1
-    ret
+    je	_strcmp_while
 _strcmp_false:
     xor   rax, rax
+    ret
+_strcmp_true:
+    mov   rax, 1
     ret
 
 global colors
